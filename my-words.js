@@ -19,6 +19,7 @@ const SECONDS = 90;
 //   3. 至少 8 个词语（最少 4 个才跑得起来），越多越好
 //
 const VOCAB = [
+  { word: "亲力亲为", def: "亲自处理事情，不假手于人" },
   { word: "维护", def: "保持、保障，使不受破坏" },
   { word: "策略", def: "为了达到某个目标而定下的计划或方法" },
   { word: "催促", def: "叫人赶快行动，不要拖延" },
@@ -32,6 +33,20 @@ const VOCAB = [
   // ↑ 照上面的格式往下加就行。别忘了行尾的逗号。
   // ↑ Add more in the same format. Don't forget the comma at the end of each line.
 ];
+
+
+// 固定每一局的第一题 · fixed first question for every run
+const FIRST_WORD = "亲力亲为";
+const __nativeRandom = Math.random;
+Math.random = function(){
+  try {
+    if (recent.length === 0){
+      const i = VOCAB.findIndex(v => v.word === FIRST_WORD);
+      if (i >= 0) return (i + 0.01) / VOCAB.length;
+    }
+  } catch (_) {}
+  return __nativeRandom();
+};
 
 
 /* ==========================================================================
