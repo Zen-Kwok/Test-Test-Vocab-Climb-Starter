@@ -35,18 +35,39 @@ const VOCAB = [
 ];
 
 
-// 固定每一局的第一题 · fixed first question for every run
+// 固定每一局第一题为“亲力亲为”。
+// 等主程序载入完毕后，包装 nextQuestion；只在新一局的第一题介入。
 const FIRST_WORD = "亲力亲为";
-const __nativeRandom = Math.random;
-Math.random = function(){
-  try {
-    if (recent.length === 0){
-      const i = VOCAB.findIndex(v => v.word === FIRST_WORD);
-      if (i >= 0) return (i + 0.01) / VOCAB.length;
+setTimeout(() => {
+  if (typeof nextQuestion !== "function") return;
+  const originalNextQuestion = nextQuestion;
+
+  nextQuestion = function(){
+    const isFirstQuestion = running && recent.length === 0 && score === 0 && altitude === 0;
+    if (!isFirstQuestion) return originalNextQuestion();
+
+    const pool = VOCAB.filter(v => !recent.includes(v.word));
+    const targetIndex = pool.findIndex(v => v.word === FIRST_WORD);
+    if (targetIndex < 0) return originalNextQuestion();
+
+    // originalNextQuestion 的第一次随机数就是选题；只改这一次，之后立刻恢复真正随机。
+    const realRandom = Math.random;
+    let firstRandomCall = true;
+    Math.random = function(){
+      if (firstRandomCall){
+        firstRandomCall = false;
+        return (targetIndex + 0.01) / pool.length;
+      }
+      return realRandom();
+    };
+
+    try {
+      return originalNextQuestion();
+    } finally {
+      Math.random = realRandom;
     }
-  } catch (_) {}
-  return __nativeRandom();
-};
+  };
+}, 0);
 
 
 /* ==========================================================================
