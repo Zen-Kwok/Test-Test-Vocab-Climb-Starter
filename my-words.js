@@ -70,6 +70,16 @@ setTimeout(() => {
   };
 }, 0);
 
+// 游戏角色：使用 6 格西瓜角色精灵图，沿用原有待机、攀爬、转向和庆祝动画。
+setTimeout(() => {
+  const sprite = document.getElementById("climber");
+  if (sprite) {
+    sprite.style.backgroundImage = 'url("watermelon-climber.svg")';
+    sprite.setAttribute("role", "img");
+    sprite.setAttribute("aria-label", "西瓜攀登角色");
+  }
+}, 0);
+
 
 /* ==========================================================================
    ↑↑↑  改到这里为止。END OF THE PART YOU EDIT.  ↑↑↑
