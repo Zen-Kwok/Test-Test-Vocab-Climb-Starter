@@ -19,6 +19,7 @@ const SECONDS = 90;
 //   3. 至少 8 个词语（最少 4 个才跑得起来），越多越好
 //
 const VOCAB = [
+  { word: "爱情", def: "男女之间相互爱慕的感情" },
   { word: "亲力亲为", def: "亲自处理事情，不假手于人" },
   { word: "维护", def: "保持、保障，使不受破坏" },
   { word: "策略", def: "为了达到某个目标而定下的计划或方法" },
@@ -35,9 +36,9 @@ const VOCAB = [
 ];
 
 
-// 固定每一局第一题为“亲力亲为”。
+// 固定每一局第一题为“爱情”。
 // 等主程序载入完毕后，包装 nextQuestion；只在新一局的第一题介入。
-const FIRST_WORD = "亲力亲为";
+const FIRST_WORD = "爱情";
 setTimeout(() => {
   if (typeof nextQuestion !== "function") return;
   const originalNextQuestion = nextQuestion;
