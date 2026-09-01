@@ -70,13 +70,13 @@ setTimeout(() => {
   };
 }, 0);
 
-// 游戏角色：使用 6 格西瓜角色精灵图，沿用原有待机、攀爬、转向和庆祝动画。
+// 游戏角色：使用 6 格女生角色精灵图，沿用原有待机、攀爬、转向和庆祝动画。
 setTimeout(() => {
   const sprite = document.getElementById("climber");
   if (sprite) {
-    sprite.style.backgroundImage = 'url("watermelon-climber.svg")';
+    sprite.style.backgroundImage = 'url("schoolgirl-climber.svg")';
     sprite.setAttribute("role", "img");
-    sprite.setAttribute("aria-label", "西瓜攀登角色");
+    sprite.setAttribute("aria-label", "女生攀登角色");
   }
 }, 0);
 
