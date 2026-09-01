@@ -9,163 +9,179 @@ const UNIT_NAME = "中一 单元五";
 // 每一局的时间，单位是秒 · seconds per run
 const SECONDS = 90;
 
+// 11 个目标词语的汉语拼音（声调符号）· Hanyu Pinyin with tone marks
+const PINYIN = {
+  "伤脑筋": "shāng nǎo jīn",
+  "拜访": "bài fǎng",
+  "中央": "zhōng yāng",
+  "漫步": "màn bù",
+  "绞尽脑汁": "jiǎo jìn nǎo zhī",
+  "华侨": "huá qiáo",
+  "银行": "yín háng",
+  "由衷": "yóu zhōng",
+  "摩天大楼": "mó tiān dà lóu",
+  "打击": "dǎ jī",
+  "挫折": "cuò zhé"
+};
+
 /*
   中一单元五：11 个词语，每个词语 2 题，共 22 题。
   每题都有 4 个固定选项，def 是正确答案。
+  同一道题的四个选项刻意控制为相同或非常接近的字数，避免长度提示答案。
 */
 const VOCAB = [
   // 伤脑筋
   {
-    id: "伤脑筋-1", vocab: "伤脑筋",
+    id: "伤脑筋-1", vocab: "伤脑筋", pinyin: PINYIN["伤脑筋"],
     word: "“伤脑筋”的意思最接近哪一项？",
-    def: "因事情难办而感到烦恼",
-    options: ["因事情难办而感到烦恼", "悠闲地随意走动", "真心实意地表达", "有礼貌地前往看望别人"]
+    def: "因事情难办而烦恼",
+    options: ["因事情难办而烦恼", "因事情顺利而开心", "因受到表扬而兴奋", "因休息不足而疲倦"]
   },
   {
-    id: "伤脑筋-2", vocab: "伤脑筋",
+    id: "伤脑筋-2", vocab: "伤脑筋", pinyin: PINYIN["伤脑筋"],
     word: "这道难题想了很久也不会做，真让人____。",
     def: "伤脑筋",
-    options: ["伤脑筋", "漫步", "由衷", "拜访"]
+    options: ["伤脑筋", "不在乎", "没关系", "想得开"]
   },
 
   // 拜访
   {
-    id: "拜访-1", vocab: "拜访",
+    id: "拜访-1", vocab: "拜访", pinyin: PINYIN["拜访"],
     word: "“拜访”的意思最接近哪一项？",
-    def: "有礼貌地前往访问或看望",
-    options: ["有礼貌地前往访问或看望", "悠闲地四处走动", "受到失败或阻碍", "把钱存进金融机构"]
+    def: "有礼貌地前往探望",
+    options: ["有礼貌地前往探望", "有计划地外出旅行", "有耐心地等待消息", "有顺序地整理物品"]
   },
   {
-    id: "拜访-2", vocab: "拜访",
-    word: "周末，我们准备去____退休的班主任。",
+    id: "拜访-2", vocab: "拜访", pinyin: PINYIN["拜访"],
+    word: "周末，我们带着礼物去____退休的班主任。",
     def: "拜访",
-    options: ["拜访", "打击", "漫步", "中央"]
+    options: ["拜访", "漫步", "打击", "挫折"]
   },
 
   // 中央
   {
-    id: "中央-1", vocab: "中央",
+    id: "中央-1", vocab: "中央", pinyin: PINYIN["中央"],
     word: "“中央”的意思最接近哪一项？",
-    def: "中心或正中间的地方",
-    options: ["中心或正中间的地方", "非常高的建筑物", "发自内心的感情", "长期居住海外的中国公民"]
+    def: "位于中心正中的地方",
+    options: ["位于中心正中的地方", "位于城市边缘的地方", "位于建筑顶层的地方", "位于河流下游的地方"]
   },
   {
-    id: "中央-2", vocab: "中央",
-    word: "学校操场的____升起了国旗。",
+    id: "中央-2", vocab: "中央", pinyin: PINYIN["中央"],
+    word: "国旗杆立在操场____。",
     def: "中央",
-    options: ["中央", "银行", "华侨", "挫折"]
+    options: ["中央", "银行", "华侨", "由衷"]
   },
 
   // 漫步
   {
-    id: "漫步-1", vocab: "漫步",
+    id: "漫步-1", vocab: "漫步", pinyin: PINYIN["漫步"],
     word: "“漫步”的意思最接近哪一项？",
-    def: "悠闲、缓慢地随意走",
-    options: ["悠闲、缓慢地随意走", "费尽心思想办法", "前去探望别人", "受到失败和阻碍"]
+    def: "悠闲缓慢地随意走动",
+    options: ["悠闲缓慢地随意走动", "快速匆忙地来回奔跑", "认真专心地坐下读书", "安静耐心地原地等候"]
   },
   {
-    id: "漫步-2", vocab: "漫步",
+    id: "漫步-2", vocab: "漫步", pinyin: PINYIN["漫步"],
     word: "傍晚，我们沿着海边慢慢____，欣赏夕阳。",
     def: "漫步",
-    options: ["漫步", "打击", "拜访", "绞尽脑汁"]
+    options: ["漫步", "拜访", "打击", "挫折"]
   },
 
   // 绞尽脑汁
   {
-    id: "绞尽脑汁-1", vocab: "绞尽脑汁",
+    id: "绞尽脑汁-1", vocab: "绞尽脑汁", pinyin: PINYIN["绞尽脑汁"],
     word: "“绞尽脑汁”的意思最接近哪一项？",
-    def: "费尽心思，想尽办法",
-    options: ["费尽心思，想尽办法", "轻松地到处散步", "从内心真诚地表达", "到银行办理业务"]
+    def: "费尽心思想尽办法",
+    options: ["费尽心思想尽办法", "毫不费力轻松完成", "不加思考随意决定", "停止尝试马上放弃"]
   },
   {
-    id: "绞尽脑汁-2", vocab: "绞尽脑汁",
+    id: "绞尽脑汁-2", vocab: "绞尽脑汁", pinyin: PINYIN["绞尽脑汁"],
     word: "为了破解谜题，他____，终于找到了答案。",
     def: "绞尽脑汁",
-    options: ["绞尽脑汁", "由衷", "漫步", "中央"]
+    options: ["绞尽脑汁", "轻而易举", "漫不经心", "半途而废"]
   },
 
   // 华侨
   {
-    id: "华侨-1", vocab: "华侨",
+    id: "华侨-1", vocab: "华侨", pinyin: PINYIN["华侨"],
     word: "“华侨”指的是哪一类人？",
-    def: "长期居住在国外但仍具有中国国籍的中国公民",
-    options: ["长期居住在国外但仍具有中国国籍的中国公民", "已经加入外国国籍的所有华人后代", "来中国短期旅游的外国人", "在银行工作的中国人"]
+    def: "旅居国外的中国公民",
+    options: ["旅居国外的中国公民", "加入外籍的华人后代", "来华旅游的外国公民", "短期出差的中国游客"]
   },
   {
-    id: "华侨-2", vocab: "华侨",
+    id: "华侨-2", vocab: "华侨", pinyin: PINYIN["华侨"],
     word: "陈伯伯仍持中国护照，却长期住在澳大利亚，他是一名____。",
     def: "华侨",
-    options: ["华侨", "银行", "摩天大楼", "中央"]
+    options: ["华侨", "游客", "外宾", "导游"]
   },
 
   // 银行
   {
-    id: "银行-1", vocab: "银行",
+    id: "银行-1", vocab: "银行", pinyin: PINYIN["银行"],
     word: "“银行”主要是什么机构？",
-    def: "办理存款、贷款等金融业务的机构",
-    options: ["办理存款、贷款等金融业务的机构", "负责教学的教育机构", "供人散步的公共场所", "专门建造高楼的公司"]
+    def: "办理金融业务的机构",
+    options: ["办理金融业务的机构", "提供医疗服务的机构", "负责学校教学的机构", "提供公共交通的机构"]
   },
   {
-    id: "银行-2", vocab: "银行",
+    id: "银行-2", vocab: "银行", pinyin: PINYIN["银行"],
     word: "爸爸到____办理存款手续。",
     def: "银行",
-    options: ["银行", "中央", "华侨", "挫折"]
+    options: ["银行", "学校", "医院", "车站"]
   },
 
   // 由衷
   {
-    id: "由衷-1", vocab: "由衷",
+    id: "由衷-1", vocab: "由衷", pinyin: PINYIN["由衷"],
     word: "“由衷”的意思最接近哪一项？",
-    def: "出于内心，真心实意",
-    options: ["出于内心，真心实意", "勉强而不情愿", "悠闲地走来走去", "因为失败而难过"]
+    def: "出自内心真诚表达",
+    options: ["出自内心真诚表达", "为了礼貌勉强表达", "按照要求机械重复", "因为害怕故意隐瞒"]
   },
   {
-    id: "由衷-2", vocab: "由衷",
+    id: "由衷-2", vocab: "由衷", pinyin: PINYIN["由衷"],
     word: "看到队友夺冠，我____地为他高兴。",
     def: "由衷",
-    options: ["由衷", "漫步", "中央", "打击"]
+    options: ["由衷", "勉强", "随意", "冷淡"]
   },
 
   // 摩天大楼
   {
-    id: "摩天大楼-1", vocab: "摩天大楼",
+    id: "摩天大楼-1", vocab: "摩天大楼", pinyin: PINYIN["摩天大楼"],
     word: "“摩天大楼”指的是什么？",
-    def: "非常高、仿佛直入天空的高楼",
-    options: ["非常高、仿佛直入天空的高楼", "城市正中央的广场", "专门办理金融业务的大厅", "供人登山的石壁"]
+    def: "非常高大的现代楼房",
+    options: ["非常高大的现代楼房", "面积宽广的低层商场", "年代久远的传统民居", "位于郊外的独立住宅"]
   },
   {
-    id: "摩天大楼-2", vocab: "摩天大楼",
+    id: "摩天大楼-2", vocab: "摩天大楼", pinyin: PINYIN["摩天大楼"],
     word: "城市里一座座____高耸入云。",
     def: "摩天大楼",
-    options: ["摩天大楼", "银行", "华侨", "挫折"]
+    options: ["摩天大楼", "体育场馆", "地下车站", "社区花园"]
   },
 
   // 打击
   {
-    id: "打击-1", vocab: "打击",
+    id: "打击-1", vocab: "打击", pinyin: PINYIN["打击"],
     word: "“打击”在“信心受到打击”中是什么意思？",
-    def: "使人受到挫败、损害或精神上的伤害",
-    options: ["使人受到挫败、损害或精神上的伤害", "真诚地赞美别人", "悠闲地散步", "有礼貌地访问别人"]
+    def: "使人受到挫败伤害",
+    options: ["使人受到挫败伤害", "使人得到鼓励支持", "使人感到轻松愉快", "使人获得表扬奖励"]
   },
   {
-    id: "打击-2", vocab: "打击",
+    id: "打击-2", vocab: "打击", pinyin: PINYIN["打击"],
     word: "这次落选对他的信心造成了不小的____。",
     def: "打击",
-    options: ["打击", "由衷", "拜访", "中央"]
+    options: ["打击", "鼓励", "帮助", "支持"]
   },
 
   // 挫折
   {
-    id: "挫折-1", vocab: "挫折",
+    id: "挫折-1", vocab: "挫折", pinyin: PINYIN["挫折"],
     word: "“挫折”的意思最接近哪一项？",
-    def: "在前进过程中遇到的失败或阻碍",
-    options: ["在前进过程中遇到的失败或阻碍", "成功之后的喜悦", "发自内心的真诚", "非常高大的建筑物"]
+    def: "前进中遇到的失败",
+    options: ["前进中遇到的失败", "努力后得到的成功", "比赛前受到的鼓励", "学习中获得的进步"]
   },
   {
-    id: "挫折-2", vocab: "挫折",
+    id: "挫折-2", vocab: "挫折", pinyin: PINYIN["挫折"],
     word: "学习过程中遇到____时，不要轻易放弃。",
     def: "挫折",
-    options: ["挫折", "摩天大楼", "银行", "漫步"]
+    options: ["挫折", "成功", "奖励", "进步"]
   }
 ];
 
@@ -174,6 +190,7 @@ const VOCAB = [
   这里改成使用每题自己准备好的四个选项，并让 22 题在全部出现前不重复。
 */
 let questionQueue = [];
+let pinyinEnabled = false;
 
 function buildQuestionQueue(){
   const q = VOCAB.slice();
@@ -191,7 +208,88 @@ function buildQuestionQueue(){
   return q;
 }
 
+function renderPinyin(){
+  const line = document.getElementById("pinyinLine");
+  if (!line) return;
+  line.textContent = (pinyinEnabled && answer && answer.pinyin) ? answer.pinyin : "";
+  line.classList.toggle("on", Boolean(pinyinEnabled && answer && answer.pinyin));
+}
+
+function updatePinyinToggle(){
+  const button = document.getElementById("pinyinToggle");
+  if (!button) return;
+  button.setAttribute("aria-pressed", pinyinEnabled ? "true" : "false");
+  button.classList.toggle("on", pinyinEnabled);
+  button.innerHTML = '<span>汉语拼音</span><b>' + (pinyinEnabled ? "开" : "关") + '</b>';
+}
+
+function setPinyinEnabled(value){
+  pinyinEnabled = Boolean(value);
+  try { localStorage.setItem("vocabClimbPinyin", pinyinEnabled ? "on" : "off"); } catch (e) {}
+  updatePinyinToggle();
+  renderPinyin();
+}
+
 setTimeout(() => {
+  /* --- 汉语拼音开关 · Hanyu Pinyin toggle ---------------- */
+  const style = document.createElement("style");
+  style.textContent = `
+    #pinyinToggle{
+      position:absolute; top:10px; right:10px; z-index:10;
+      width:88px; min-height:44px; padding:5px 8px;
+      border-radius:11px; border:1px solid rgba(224,168,60,.5);
+      background:rgba(18,15,11,.88); color:#f6efe2;
+      font-family:inherit; cursor:pointer;
+      box-shadow:0 4px 14px rgba(0,0,0,.3);
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      line-height:1.05;
+    }
+    #pinyinToggle span{ font-size:.68rem; letter-spacing:.05em; opacity:.82; }
+    #pinyinToggle b{ margin-top:3px; font-size:.9rem; color:#e0a83c; }
+    #pinyinToggle.on{ border-color:rgba(105,190,111,.9); background:rgba(28,67,35,.92); }
+    #pinyinToggle.on b{ color:#9ee7a4; }
+    #pinyinLine{
+      display:none; text-align:center; min-height:1.3em;
+      margin:-5px 0 10px; font-size:clamp(.86rem,3.4vw,1rem);
+      line-height:1.25; letter-spacing:.045em; color:#f3d47e;
+      font-weight:600;
+    }
+    #pinyinLine.on{ display:block; }
+    @media (max-width:520px){
+      .hud{ padding-right:108px !important; }
+    }
+  `;
+  document.head.appendChild(style);
+
+  const stage = document.querySelector(".stage");
+  if (stage && !document.getElementById("pinyinToggle")) {
+    const toggle = document.createElement("button");
+    toggle.id = "pinyinToggle";
+    toggle.type = "button";
+    toggle.setAttribute("aria-label", "开启或关闭汉语拼音");
+    toggle.onclick = () => setPinyinEnabled(!pinyinEnabled);
+    stage.appendChild(toggle);
+  }
+
+  const questionEl = document.getElementById("word");
+  if (questionEl) {
+    questionEl.style.fontSize = "clamp(1.15rem, 4.6vw, 1.55rem)";
+    questionEl.style.letterSpacing = ".02em";
+    questionEl.style.lineHeight = "1.45";
+
+    if (!document.getElementById("pinyinLine")) {
+      const line = document.createElement("div");
+      line.id = "pinyinLine";
+      line.setAttribute("aria-live", "polite");
+      questionEl.insertAdjacentElement("afterend", line);
+    }
+  }
+
+  try { pinyinEnabled = localStorage.getItem("vocabClimbPinyin") === "on"; } catch (e) { pinyinEnabled = false; }
+  updatePinyinToggle();
+  renderPinyin();
+
+  /* --- 使用固定四选项与 22 题队列 ------------------------ */
   if (typeof nextQuestion === "function") {
     nextQuestion = function(){
       // 新一局从全新的 22 题队列开始。
@@ -204,6 +302,8 @@ setTimeout(() => {
       recent.push(answer.id);
 
       $("word").textContent = answer.word;
+      renderPinyin();
+
       const box = $("options");
       box.innerHTML = "";
 
@@ -220,14 +320,6 @@ setTimeout(() => {
         box.appendChild(b);
       });
     };
-  }
-
-  // 长题目用较紧凑的字号，手机和电脑都不会挤出画面。
-  const questionEl = document.getElementById("word");
-  if (questionEl) {
-    questionEl.style.fontSize = "clamp(1.15rem, 4.6vw, 1.55rem)";
-    questionEl.style.letterSpacing = ".02em";
-    questionEl.style.lineHeight = "1.45";
   }
 
   // 开始画面显示真实的词语与题目数量。
