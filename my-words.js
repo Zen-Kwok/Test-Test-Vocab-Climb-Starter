@@ -1,194 +1,45 @@
-/* ==========================================================================
-   ↓↓↓  老师们，只需要改这个文件。别的文件都不用动。  ↓↓↓
-   TEACHERS: this is the only file you need to edit. Leave everything else alone.
-   ========================================================================== */
-
-// 显示在开始画面上的单元名称 · unit name shown on the start screen
-const UNIT_NAME = "中一 单元五";
-
-// 每一局的时间，单位是秒 · seconds per run
+/* 2026 1G3 年终考试词语复习题库 */
+const UNIT_NAME = "2026 1G3 年终考试词语复习";
 const SECONDS = 90;
 
-// 11 个目标词语的汉语拼音（声调符号）· Hanyu Pinyin with tone marks
-const PINYIN = {
-  "伤脑筋": "shāng nǎo jīn",
-  "拜访": "bài fǎng",
-  "中央": "zhōng yāng",
-  "漫步": "màn bù",
-  "绞尽脑汁": "jiǎo jìn nǎo zhī",
-  "华侨": "huá qiáo",
-  "银行": "yín háng",
-  "由衷": "yóu zhōng",
-  "摩天大楼": "mó tiān dà lóu",
-  "打击": "dǎ jī",
-  "挫折": "cuò zhé"
-};
-
-/*
-  中一单元五：11 个词语，每个词语 2 题，共 22 题。
-  每题都有 4 个固定选项，def 是正确答案。
-  同一道题的四个选项刻意控制为相同或非常接近的字数，避免长度提示答案。
-*/
-const VOCAB = [
-  // 伤脑筋
-  {
-    id: "伤脑筋-1", vocab: "伤脑筋", pinyin: PINYIN["伤脑筋"],
-    word: "“伤脑筋”的意思最接近哪一项？",
-    def: "因事情难办而烦恼",
-    options: ["因事情难办而烦恼", "因事情顺利而开心", "因受到表扬而兴奋", "因休息不足而疲倦"]
-  },
-  {
-    id: "伤脑筋-2", vocab: "伤脑筋", pinyin: PINYIN["伤脑筋"],
-    word: "这道难题想了很久也不会做，真让人____。",
-    def: "伤脑筋",
-    options: ["伤脑筋", "不在乎", "没关系", "想得开"]
-  },
-
-  // 拜访
-  {
-    id: "拜访-1", vocab: "拜访", pinyin: PINYIN["拜访"],
-    word: "“拜访”的意思最接近哪一项？",
-    def: "有礼貌地前往探望",
-    options: ["有礼貌地前往探望", "有计划地外出旅行", "有耐心地等待消息", "有顺序地整理物品"]
-  },
-  {
-    id: "拜访-2", vocab: "拜访", pinyin: PINYIN["拜访"],
-    word: "周末，我们带着礼物去____退休的班主任。",
-    def: "拜访",
-    options: ["拜访", "漫步", "打击", "挫折"]
-  },
-
-  // 中央
-  {
-    id: "中央-1", vocab: "中央", pinyin: PINYIN["中央"],
-    word: "“中央”的意思最接近哪一项？",
-    def: "位于中心正中的地方",
-    options: ["位于中心正中的地方", "位于城市边缘的地方", "位于建筑顶层的地方", "位于河流下游的地方"]
-  },
-  {
-    id: "中央-2", vocab: "中央", pinyin: PINYIN["中央"],
-    word: "国旗杆立在操场____。",
-    def: "中央",
-    options: ["中央", "银行", "华侨", "由衷"]
-  },
-
-  // 漫步
-  {
-    id: "漫步-1", vocab: "漫步", pinyin: PINYIN["漫步"],
-    word: "“漫步”的意思最接近哪一项？",
-    def: "悠闲缓慢地随意走动",
-    options: ["悠闲缓慢地随意走动", "快速匆忙地来回奔跑", "认真专心地坐下读书", "安静耐心地原地等候"]
-  },
-  {
-    id: "漫步-2", vocab: "漫步", pinyin: PINYIN["漫步"],
-    word: "傍晚，我们沿着海边慢慢____，欣赏夕阳。",
-    def: "漫步",
-    options: ["漫步", "拜访", "打击", "挫折"]
-  },
-
-  // 绞尽脑汁
-  {
-    id: "绞尽脑汁-1", vocab: "绞尽脑汁", pinyin: PINYIN["绞尽脑汁"],
-    word: "“绞尽脑汁”的意思最接近哪一项？",
-    def: "费尽心思想尽办法",
-    options: ["费尽心思想尽办法", "毫不费力轻松完成", "不加思考随意决定", "停止尝试马上放弃"]
-  },
-  {
-    id: "绞尽脑汁-2", vocab: "绞尽脑汁", pinyin: PINYIN["绞尽脑汁"],
-    word: "为了破解谜题，他____，终于找到了答案。",
-    def: "绞尽脑汁",
-    options: ["绞尽脑汁", "轻而易举", "漫不经心", "半途而废"]
-  },
-
-  // 华侨
-  {
-    id: "华侨-1", vocab: "华侨", pinyin: PINYIN["华侨"],
-    word: "“华侨”指的是哪一类人？",
-    def: "旅居国外的中国公民",
-    options: ["旅居国外的中国公民", "加入外籍的华人后代", "来华旅游的外国公民", "短期出差的中国游客"]
-  },
-  {
-    id: "华侨-2", vocab: "华侨", pinyin: PINYIN["华侨"],
-    word: "陈伯伯仍持中国护照，却长期住在澳大利亚，他是一名____。",
-    def: "华侨",
-    options: ["华侨", "游客", "外宾", "导游"]
-  },
-
-  // 银行
-  {
-    id: "银行-1", vocab: "银行", pinyin: PINYIN["银行"],
-    word: "“银行”主要是什么机构？",
-    def: "办理金融业务的机构",
-    options: ["办理金融业务的机构", "提供医疗服务的机构", "负责学校教学的机构", "提供公共交通的机构"]
-  },
-  {
-    id: "银行-2", vocab: "银行", pinyin: PINYIN["银行"],
-    word: "爸爸到____办理存款手续。",
-    def: "银行",
-    options: ["银行", "学校", "医院", "车站"]
-  },
-
-  // 由衷
-  {
-    id: "由衷-1", vocab: "由衷", pinyin: PINYIN["由衷"],
-    word: "“由衷”的意思最接近哪一项？",
-    def: "出自内心真诚表达",
-    options: ["出自内心真诚表达", "为了礼貌勉强表达", "按照要求机械重复", "因为害怕故意隐瞒"]
-  },
-  {
-    id: "由衷-2", vocab: "由衷", pinyin: PINYIN["由衷"],
-    word: "看到队友夺冠，我____地为他高兴。",
-    def: "由衷",
-    options: ["由衷", "勉强", "随意", "冷淡"]
-  },
-
-  // 摩天大楼
-  {
-    id: "摩天大楼-1", vocab: "摩天大楼", pinyin: PINYIN["摩天大楼"],
-    word: "“摩天大楼”指的是什么？",
-    def: "非常高大的现代楼房",
-    options: ["非常高大的现代楼房", "面积宽广的低层商场", "年代久远的传统民居", "位于郊外的独立住宅"]
-  },
-  {
-    id: "摩天大楼-2", vocab: "摩天大楼", pinyin: PINYIN["摩天大楼"],
-    word: "城市里一座座____高耸入云。",
-    def: "摩天大楼",
-    options: ["摩天大楼", "体育场馆", "地下车站", "社区花园"]
-  },
-
-  // 打击
-  {
-    id: "打击-1", vocab: "打击", pinyin: PINYIN["打击"],
-    word: "“打击”在“信心受到打击”中是什么意思？",
-    def: "使人受到挫败伤害",
-    options: ["使人受到挫败伤害", "使人得到鼓励支持", "使人感到轻松愉快", "使人获得表扬奖励"]
-  },
-  {
-    id: "打击-2", vocab: "打击", pinyin: PINYIN["打击"],
-    word: "这次落选对他的信心造成了不小的____。",
-    def: "打击",
-    options: ["打击", "鼓励", "帮助", "支持"]
-  },
-
-  // 挫折
-  {
-    id: "挫折-1", vocab: "挫折", pinyin: PINYIN["挫折"],
-    word: "“挫折”的意思最接近哪一项？",
-    def: "前进中遇到的失败",
-    options: ["前进中遇到的失败", "努力后得到的成功", "比赛前受到的鼓励", "学习中获得的进步"]
-  },
-  {
-    id: "挫折-2", vocab: "挫折", pinyin: PINYIN["挫折"],
-    word: "学习过程中遇到____时，不要轻易放弃。",
-    def: "挫折",
-    options: ["挫折", "成功", "奖励", "进步"]
-  }
+const QUESTION_DATA = [
+["新颖","xīn yǐng","哪一个词语指“构思或形式特别，给人新鲜感”？","新颖","新颖","讲究","繁荣","中央"],
+["尴尬","gān gà","第一次上台时，我忘了台词，站在那里感到十分____。","尴尬","焦急","尴尬","由衷","慢条斯理"],
+["赖床","lài chuáng","闹钟响了好几次，弟弟还是不肯起床，一直____。","赖床","漫步","哀求","赖床","催促"],
+["辅导员","fǔ dǎo yuán","学校的____耐心地听取同学们的烦恼，并给予建议。","辅导员","辅导员","工作坊","中央","策略"],
+["以礼待人","yǐ lǐ dài rén","“用礼貌和尊重的态度对待别人”是指：","以礼待人","奉献","以礼待人","开卷有益","坚持不懈"],
+["工作坊","gōng zuò fāng","学校举办写作____，让同学通过活动学习写作技巧。","工作坊","光芒","工作坊","策略","友谊"],
+["焦急","jiāo jí","弟弟走失后，妈妈四处寻找，心里十分____。","焦急","尴尬","慢条斯理","焦急","由衷"],
+["哀求","āi qiú","小男孩不断____母亲，让他再玩十分钟。","哀求","催促","哀求","抨击","允许"],
+["友谊","yǒu yì","哪一个词语指朋友之间真诚而亲密的感情？","友谊","友谊","奉献","光芒","挫折"],
+["一帆风顺","yī fān fēng shùn","创业过程不可能永远____，我们要做好面对困难的准备。","一帆风顺","朗朗上口","一帆风顺","慢条斯理","坚持不懈"],
+["繁荣","fán róng","港口带动了贸易和旅游业，使这座城市变得更加____。","繁荣","中央","新颖","繁荣","讲究"],
+["策略","cè lüè","比赛前，教练根据对手的特点制订了新的____。","策略","策略","工作坊","挫折","光芒"],
+["由衷","yóu zhōng","我____地感谢同学们在我生病期间给予的帮助。","由衷","焦急","由衷","尴尬","慢条斯理"],
+["伤脑筋","shāng nǎo jīn","电脑突然坏了，而报告明天就要交，真让人____。","伤脑筋","朗朗上口","以礼待人","伤脑筋","一帆风顺"],
+["开卷有益","kāi juàn yǒu yì","“阅读有益，能让人增长知识”可以用哪个成语概括？","开卷有益","开卷有益","坚持不懈","绞尽脑汁","一帆风顺"],
+["光芒","guāng máng","太阳升起后，金色的____照亮了整片大地。","光芒","中央","光芒","友谊","策略"],
+["催促","cuī cù","眼看校车快开了，妈妈不停地____弟弟穿鞋。","催促","哀求","允许","催促","抨击"],
+["嗓子眼","sǎng zi yǎn","听见老师突然叫到自己的名字，我紧张得心都提到____了。","嗓子眼","嗓子眼","光芒","中央","工作坊"],
+["漫步","màn bù","晚饭后，爷爷奶奶喜欢在公园里悠闲地____。","漫步","赖床","漫步","奉献","哀求"],
+["坚持不懈","jiān chí bù xiè","哪个句子正确使用了“坚持不懈”？","遇到挫折后，他坚持不懈地继续练习。","遇到挫折后，他坚持不懈地继续练习。","雨停了，天空显得坚持不懈。","她坚持不懈地坐在椅子上发呆。","这首歌曲的旋律十分坚持不懈。"],
+["讲究","jiǎng jiu","哪个句子正确使用了“讲究”？","他对食材和烹调方法十分讲究。","学校中央讲究在操场旁边。","他对食材和烹调方法十分讲究。","弟弟讲究妈妈让他买玩具。","太阳讲究出耀眼的光芒。"],
+["挫折","cuò zhé","虽然经历了许多____，她仍没有放弃自己的梦想。","挫折","光芒","友谊","挫折","繁荣"],
+["允许","yǔn xǔ","哪个句子正确使用了“允许”？","妈妈允许我完成作业后看半小时电视。","妈妈允许我完成作业后看半小时电视。","他允许地冲向终点。","这道题目让我十分允许。","城市的发展越来越允许。"],
+["抨击","pēng jī","哪个句子正确使用了“抨击”？","评论者严厉抨击浪费食物的行为。","妹妹抨击我把窗户打开。","评论者严厉抨击浪费食物的行为。","大家在公园里抨击美丽的花朵。","这首儿歌听起来十分抨击。"],
+["慢条斯理","màn tiáo sī lǐ","哪个情境最能表现一个人“慢条斯理”？","大家等着出发，他却不慌不忙地收拾书包","上课迟到后慌忙冲进教室","听到坏消息后急得团团转","大家等着出发，他却不慌不忙地收拾书包","为了赢得比赛而天天刻苦训练"],
+["中央","zhōng yāng","“学校位于社区的中央”中的“中央”是什么意思？","正中间的位置","最繁荣的地方","正中间的位置","政府机构","光线最明亮的地方"],
+["奉献","fèng xiàn","哪个句子正确使用了“奉献”？","医护人员为照顾病人奉献了时间和精力。","医护人员为照顾病人奉献了时间和精力。","他奉献妈妈让他继续玩游戏。","这条道路奉献在城市中央。","她奉献地回答了老师的问题。"],
+["由衷","yóu zhōng","朋友取得好成绩时，哪一句最能表达“由衷”的祝福？","我真心为你感到高兴！","你只是运气好罢了。","我真心为你感到高兴！","快点告诉我你的成绩。","这件事真让人伤脑筋。"],
+["朗朗上口","lǎng lǎng shàng kǒu","哪个词语的拼音是“lǎng lǎng shàng kǒu”？","朗朗上口","绞尽脑汁","一帆风顺","朗朗上口","坚持不懈"],
+["绞尽脑汁","jiǎo jìn nǎo zhī","选出书写正确、表示“想尽一切办法”的词语。","绞尽脑汁","搅尽脑汁","绞进脑汁","绞尽脑汁","饺尽脑汁"]
 ];
 
-/*
-  游戏原本会从其他题目的答案中随机抓三个干扰项。
-  这里改成使用每题自己准备好的四个选项，并让 22 题在全部出现前不重复。
-*/
+const VOCAB = QUESTION_DATA.map((q, i) => ({
+  id: String(i + 1), vocab: q[0], pinyin: q[1],
+  word: q[2], def: q[3], options: q.slice(4)
+}));
+
 let questionQueue = [];
 let pinyinEnabled = false;
 
@@ -198,8 +49,6 @@ function buildQuestionQueue(){
     const j = Math.floor(Math.random() * (i + 1));
     [q[i], q[j]] = [q[j], q[i]];
   }
-
-  // 尽量避免同一个词语的两道题连续出现。
   for (let i = 1; i < q.length; i++){
     if (q[i].vocab !== q[i - 1].vocab) continue;
     const swapAt = q.findIndex((item, j) => j > i && item.vocab !== q[i - 1].vocab);
@@ -231,38 +80,21 @@ function setPinyinEnabled(value){
 }
 
 setTimeout(() => {
-  /* --- 汉语拼音开关 · Hanyu Pinyin toggle ---------------- */
   const style = document.createElement("style");
   style.textContent = `
-    #pinyinToggle{
-      position:absolute; top:10px; right:10px; z-index:10;
-      width:88px; min-height:44px; padding:5px 8px;
-      border-radius:11px; border:1px solid rgba(224,168,60,.5);
-      background:rgba(18,15,11,.88); color:#f6efe2;
-      font-family:inherit; cursor:pointer;
-      box-shadow:0 4px 14px rgba(0,0,0,.3);
-      display:flex; flex-direction:column; align-items:center; justify-content:center;
-      line-height:1.05;
-    }
-    #pinyinToggle span{ font-size:.68rem; letter-spacing:.05em; opacity:.82; }
-    #pinyinToggle b{ margin-top:3px; font-size:.9rem; color:#e0a83c; }
-    #pinyinToggle.on{ border-color:rgba(105,190,111,.9); background:rgba(28,67,35,.92); }
-    #pinyinToggle.on b{ color:#9ee7a4; }
-    #pinyinLine{
-      display:none; text-align:center; min-height:1.3em;
-      margin:-5px 0 10px; font-size:clamp(.86rem,3.4vw,1rem);
-      line-height:1.25; letter-spacing:.045em; color:#f3d47e;
-      font-weight:600;
-    }
-    #pinyinLine.on{ display:block; }
-    @media (max-width:520px){
-      .hud{ padding-right:108px !important; }
-    }
+    #pinyinToggle{position:absolute;top:10px;right:10px;z-index:10;width:88px;min-height:44px;padding:5px 8px;border-radius:11px;border:1px solid rgba(224,168,60,.5);background:rgba(18,15,11,.88);color:#f6efe2;font-family:inherit;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.3);display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.05}
+    #pinyinToggle span{font-size:.68rem;letter-spacing:.05em;opacity:.82}
+    #pinyinToggle b{margin-top:3px;font-size:.9rem;color:#e0a83c}
+    #pinyinToggle.on{border-color:rgba(105,190,111,.9);background:rgba(28,67,35,.92)}
+    #pinyinToggle.on b{color:#9ee7a4}
+    #pinyinLine{display:none;text-align:center;min-height:1.3em;margin:-5px 0 10px;font-size:clamp(.86rem,3.4vw,1rem);line-height:1.25;letter-spacing:.045em;color:#f3d47e;font-weight:600}
+    #pinyinLine.on{display:block}
+    @media (max-width:520px){.hud{padding-right:108px!important}}
   `;
   document.head.appendChild(style);
 
   const stage = document.querySelector(".stage");
-  if (stage && !document.getElementById("pinyinToggle")) {
+  if (stage && !document.getElementById("pinyinToggle")){
     const toggle = document.createElement("button");
     toggle.id = "pinyinToggle";
     toggle.type = "button";
@@ -272,12 +104,11 @@ setTimeout(() => {
   }
 
   const questionEl = document.getElementById("word");
-  if (questionEl) {
+  if (questionEl){
     questionEl.style.fontSize = "clamp(1.15rem, 4.6vw, 1.55rem)";
     questionEl.style.letterSpacing = ".02em";
     questionEl.style.lineHeight = "1.45";
-
-    if (!document.getElementById("pinyinLine")) {
+    if (!document.getElementById("pinyinLine")){
       const line = document.createElement("div");
       line.id = "pinyinLine";
       line.setAttribute("aria-live", "polite");
@@ -289,30 +120,21 @@ setTimeout(() => {
   updatePinyinToggle();
   renderPinyin();
 
-  /* --- 使用固定四选项与 22 题队列 ------------------------ */
-  if (typeof nextQuestion === "function") {
+  if (typeof nextQuestion === "function"){
     nextQuestion = function(){
-      // 新一局从全新的 22 题队列开始。
-      if (recent.length === 0 && score === 0 && altitude === 0) {
-        questionQueue = buildQuestionQueue();
-      }
+      if (recent.length === 0 && score === 0 && altitude === 0) questionQueue = buildQuestionQueue();
       if (!questionQueue.length) questionQueue = buildQuestionQueue();
-
       answer = questionQueue.shift();
       recent.push(answer.id);
-
       $("word").textContent = answer.word;
       renderPinyin();
-
       const box = $("options");
       box.innerHTML = "";
-
       const choices = answer.options.slice();
       for (let i = choices.length - 1; i > 0; i--){
         const j = Math.floor(Math.random() * (i + 1));
         [choices[i], choices[j]] = [choices[j], choices[i]];
       }
-
       choices.forEach((choice, i) => {
         const b = document.createElement("button");
         b.innerHTML = '<span class="n">' + (i + 1) + '</span><span>' + escapeHtml(choice) + '</span>';
@@ -322,21 +144,13 @@ setTimeout(() => {
     };
   }
 
-  // 开始画面显示真实的词语与题目数量。
   const info = document.getElementById("startInfo");
-  if (info) {
-    info.innerHTML = '<b>' + UNIT_NAME + '</b><br>11 个词语 · 22 道题 · ' + Number(SECONDS) + ' 秒';
-  }
+  if (info) info.innerHTML = '<b>' + UNIT_NAME + '</b><br>29 个词语 · 30 道题 · ' + Number(SECONDS) + ' 秒';
 
-  // 游戏角色：使用 6 格女生角色精灵图，沿用原有待机、攀爬、转向和庆祝动画。
   const sprite = document.getElementById("climber");
-  if (sprite) {
+  if (sprite){
     sprite.style.backgroundImage = 'url("schoolgirl-climber.svg")';
     sprite.setAttribute("role", "img");
     sprite.setAttribute("aria-label", "女生攀登角色");
   }
 }, 0);
-
-/* ==========================================================================
-   ↑↑↑  改到这里为止。END OF THE PART YOU EDIT.  ↑↑↑
-   ========================================================================== */
