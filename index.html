@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>攀山快答 · 教师改编版</title>
+<title>荷叶快跳 · 词语复习</title>
 <style>
 /* ============================================================
    样式 · Styles
@@ -60,13 +60,13 @@ body{
 
 .wall{
   position:absolute; top:0; bottom:0; left:50%; transform:translateX(-50%);
-  width:78%; max-width:340px;
-  background-image:url("wall.jpg");
+  width:100%; max-width:480px;
+  background-image:url("lotus-lake.jpg");
   background-size:100% auto;
   background-repeat:repeat-y;
   background-position-y:0px;
   transition:background-position-y .45s ease-out;
-  box-shadow:0 0 30px 12px rgba(0,0,0,.55);
+  box-shadow:0 0 30px 12px rgba(0,0,0,.42);
 }
 
 /* 落脚点不用画：山壁那张图上本来就有石台，人直接站上去。
@@ -76,7 +76,7 @@ body{
 /* 人放在这个盒子里，跟山壁对齐 · same box as the wall, so they line up */
 .wallbox{
   position:absolute; top:0; bottom:0; left:50%; transform:translateX(-50%);
-  width:78%; max-width:340px; pointer-events:none;
+  width:100%; max-width:480px; pointer-events:none;
 }
 
 .climber{
@@ -87,7 +87,7 @@ body{
   background-position-x:0%;
   image-rendering:auto;
   filter:drop-shadow(0 6px 6px rgba(0,0,0,.5));
-  transition:bottom .45s ease-out, left .45s ease-out;
+  transition:bottom .62s ease-out, left .62s ease-out;
   /* 画里的猴子是朝右的。--face 用 -1 把它翻过来朝左。
      The drawing faces right. --face flips it to -1 to face left. */
   transform:scaleX(var(--face, 1));
@@ -96,11 +96,28 @@ body{
    每一帧都要带上 scaleX，不然动画一跑，朝向就被冲掉了。
    Every frame carries the scaleX too: the animation writes transform, so
    leaving it out of a single frame would wipe the facing mid-hop. */
-.climber.hop{ animation:hop .45s ease-out; }
+.climber.hop{ animation:hop .62s ease-out; }
 @keyframes hop{
   0%{ transform:translateY(0) scaleX(var(--face, 1)) }
-  45%{ transform:translateY(-20px) scaleX(var(--face, 1)) }
+  48%{ transform:translateY(-48px) scaleX(var(--face, 1)) }
   100%{ transform:translateY(0) scaleX(var(--face, 1)) }
+}
+
+.ripple{
+  position:absolute; z-index:0; width:110px; height:34px;
+  margin-left:-55px; margin-bottom:-14px;
+  border:3px solid rgba(220,250,255,.9); border-radius:50%;
+  box-shadow:0 0 7px rgba(115,220,245,.75);
+  animation:rippleOut .8s ease-out forwards;
+}
+.ripple::after{
+  content:""; position:absolute; inset:-9px -15px;
+  border:2px solid rgba(195,242,255,.65); border-radius:50%;
+}
+@keyframes rippleOut{
+  0%{ opacity:0; transform:scale(.35) }
+  18%{ opacity:1 }
+  100%{ opacity:0; transform:scale(1.45) }
 }
 
 /* --- 顶部信息 · the HUD ----------------------------------- */
@@ -226,29 +243,29 @@ body{
       </div>
       <div class="hud">
         <div id="timeBox"><b id="time">--</b><span>秒</span></div>
-        <div><b id="alt">0</b><span>海拔（米）</span></div>
+        <div><b id="alt">0</b><span>跳跃（格）</span></div>
         <div><b id="score">0</b><span>答对</span></div>
       </div>
     </div>
 
     <div class="panel" id="panel">
-      <div class="word" id="word">攀山快答</div>
+      <div class="word" id="word">荷叶快跳</div>
       <div class="options" id="options"></div>
     </div>
   </div>
 
   <!-- 开始画面 -->
   <div class="screen on" id="startScreen">
-    <h1>攀山快答</h1>
+    <h1>荷叶快跳</h1>
     <p id="startInfo"></p>
-    <button id="startBtn">开始攀登</button>
-    <p class="fine">答对往上爬一格 · 答错扣三秒</p>
+    <button id="startBtn">开始跳跃</button>
+    <p class="fine">答对跳向下一片荷叶 · 答错扣三秒</p>
   </div>
 
   <!-- 结束画面 -->
   <div class="screen" id="endScreen">
-    <h1>登顶了</h1>
-    <div class="big"><span id="finalAlt">0</span> 米</div>
+    <h1>闯关完成</h1>
+    <div class="big"><span id="finalAlt">0</span> 格</div>
     <p>答对 <b id="finalScore">0</b> 题</p>
     <button id="againBtn">再爬一次</button>
   </div>
@@ -284,7 +301,7 @@ window.addEventListener('error', function(e){
 
 const DEADZONE   = .45;   // 人爬到画面这么高就不再往上，改成画面往下卷
                           // the climber rises to this height, then the wall scrolls
-const CLIMB_MS   = 450;   // 一次攀爬动作的时长
+const CLIMB_MS   = 620;   // 一次荷叶跳跃的时长
 const PENALTY_MS = 3000;  // 答错扣多少毫秒
 const FOOT_TRIM  = 3;     // 图里猴子的脚离图片底边还有这么几个点
                           // the sprite's feet sit this many px above its own bottom edge
@@ -300,13 +317,12 @@ const FOOT_TRIM  = 3;     // 图里猴子的脚离图片底边还有这么几个
    as high as anyone can climb. Swap wall.jpg and these have to be re-measured,
    or the climber lands on thin air. */
 const WALL_LEDGES = [
-  { x: .369, y: .932 }, { x: .663, y: .860 }, { x: .165, y: .811 },
-  { x: .843, y: .714 }, { x: .297, y: .671 }, { x: .652, y: .587 },
-  { x: .244, y: .514 }, { x: .764, y: .466 }, { x: .317, y: .374 },
-  { x: .629, y: .301 }, { x: .206, y: .239 }, { x: .852, y: .189 },
-  { x: .631, y: .158 }, { x: .192, y: .082 }, { x: .846, y: .035 }
+  { x: .585, y: .945 }, { x: .383, y: .785 },
+  { x: .617, y: .625 }, { x: .432, y: .475 },
+  { x: .663, y: .345 }, { x: .480, y: .225 },
+  { x: .550, y: .105 }, { x: .415, y: .020 }
 ];
-const TILE_RATIO = 837 / 600;   // wall.jpg 的高比宽 · the wall image's height over its width
+const TILE_RATIO = 1130 / 941;  // lotus-lake.jpg 的高宽比
 
 const $ = id => document.getElementById(id);
 const wall = $('wall'), climber = $('climber'), panel = $('panel');
@@ -488,6 +504,22 @@ function ascend(){
     setFrame(frame);
     if (++steps >= 4){ clearInterval(animId); setFrame(0); }
   }, CLIMB_MS / 4);
+
+  // 人物落在荷叶上时，荡开两圈水波。
+  setTimeout(makeRipple, CLIMB_MS - 40);
+}
+
+function makeRipple(){
+  if (!wall.clientWidth) return;
+  const H = wallbox.clientHeight;
+  const worldY = ledgeH(altitude);
+  const scroll = Math.max(0, worldY - H * DEADZONE);
+  const ring = document.createElement('div');
+  ring.className = 'ripple';
+  ring.style.left = (ledgeAt(altitude).x * 100) + '%';
+  ring.style.bottom = (worldY - scroll) + 'px';
+  wallbox.insertBefore(ring, climber);
+  setTimeout(() => ring.remove(), 850);
 }
 
 /* --- 一局的开始与结束 · run start & end ------------------- */
@@ -504,6 +536,7 @@ function startRun(){
   climber.style.setProperty('--face',
     (WALL_LEDGES[1].x >= WALL_LEDGES[0].x) ? '1' : '-1');
   setFrame(0);
+  makeRipple();
 
   $('startScreen').classList.remove('on');
   $('endScreen').classList.remove('on');
