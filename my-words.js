@@ -35,9 +35,42 @@ const QUESTION_DATA = [
 ["绞尽脑汁","jiǎo jìn nǎo zhī","选出书写正确、表示“想尽一切办法”的词语。","绞尽脑汁","搅尽脑汁","绞进脑汁","绞尽脑汁","饺尽脑汁"]
 ];
 
+const QUESTION_PINYIN = [
+  "Nǎ yí ge cí yǔ zhǐ “gòu sī huò xíng shì tè bié, gěi rén xīn xiān gǎn”?",
+  "Dì yī cì shàng tái shí, wǒ wàng le tái cí, zhàn zài nà li gǎn dào shí fēn ____.",
+  "Nào zhōng xiǎng le hǎo jǐ cì, dì di hái shì bù kěn qǐ chuáng, yì zhí ____.",
+  "Xué xiào de ____ nài xīn de tīng qǔ tóng xué men de fán nǎo, bìng gěi yǔ jiàn yì.",
+  "“Yòng lǐ mào hé zūn zhòng de tài dù duì dài bié rén” shì zhǐ:",
+  "Xué xiào jǔ bàn xiě zuò ____, ràng tóng xué tōng guò huó dòng xué xí xiě zuò jì qiǎo.",
+  "Dì di zǒu shī hòu, mā ma sì chù xún zhǎo, xīn li shí fēn ____.",
+  "Xiǎo nán hái bù duàn ____ mǔ qīn, ràng tā zài wán shí fēn zhōng.",
+  "Nǎ yí ge cí yǔ zhǐ péng yǒu zhī jiān zhēn chéng ér qīn mì de gǎn qíng?",
+  "Chuàng yè guò chéng bù kě néng yǒng yuǎn ____, wǒ men yào zuò hǎo miàn duì kùn nan de zhǔn bèi.",
+  "Gǎng kǒu dài dòng le mào yì hé lǚ yóu yè, shǐ zhè zuò chéng shì biàn de gèng jiā ____.",
+  "Bǐ sài qián, jiào liàn gēn jù duì shǒu de tè diǎn zhì dìng le xīn de ____.",
+  "Wǒ ____ de gǎn xiè tóng xué men zài wǒ shēng bìng qī jiān gěi yǔ de bāng zhù.",
+  "Diàn nǎo tū rán huài le, ér bào gào míng tiān jiù yào jiāo, zhēn ràng rén ____.",
+  "“Yuè dú yǒu yì, néng ràng rén zēng zhǎng zhī shí” kě yǐ yòng nǎ ge chéng yǔ gài kuò?",
+  "Tài yáng shēng qǐ hòu, jīn sè de ____ zhào liàng le zhěng piàn dà dì.",
+  "Yǎn kàn xiào chē kuài kāi le, mā ma bù tíng de ____ dì di chuān xié.",
+  "Tīng jiàn lǎo shī tū rán jiào dào zì jǐ de míng zi, wǒ jǐn zhāng de xīn dōu tí dào ____ le.",
+  "Wǎn fàn hòu, yé ye nǎi nai xǐ huan zài gōng yuán li yōu xián de ____.",
+  "Nǎ ge jù zi zhèng què shǐ yòng le “jiān chí bù xiè”?",
+  "Nǎ ge jù zi zhèng què shǐ yòng le “jiǎng jiu”?",
+  "Suī rán jīng lì le xǔ duō ____, tā réng méi yǒu fàng qì zì jǐ de mèng xiǎng.",
+  "Nǎ ge jù zi zhèng què shǐ yòng le “yǔn xǔ”?",
+  "Nǎ ge jù zi zhèng què shǐ yòng le “pēng jī”?",
+  "Nǎ ge qíng jìng zuì néng biǎo xiàn yí ge rén “màn tiáo sī lǐ”?",
+  "“Xué xiào wèi yú shè qū de zhōng yāng” zhōng de “zhōng yāng” shì shén me yì si?",
+  "Nǎ ge jù zi zhèng què shǐ yòng le “fèng xiàn”?",
+  "Péng yǒu qǔ dé hǎo chéng jì shí, nǎ yí jù zuì néng biǎo dá “yóu zhōng” de zhù fú?",
+  "Nǎ ge cí yǔ de pīn yīn shì “lǎng lǎng shàng kǒu”?",
+  "Xuǎn chū shū xiě zhèng què, biǎo shì “xiǎng jìn yí qiè bàn fǎ” de cí yǔ."
+];
+
 const VOCAB = QUESTION_DATA.map((q, i) => ({
   id: String(i + 1), vocab: q[0], pinyin: q[1],
-  word: q[2], def: q[3], options: q.slice(4)
+  word: q[2], questionPinyin: QUESTION_PINYIN[i], def: q[3], options: q.slice(4)
 }));
 
 let questionQueue = [];
@@ -60,8 +93,8 @@ function buildQuestionQueue(){
 function renderPinyin(){
   const line = document.getElementById("pinyinLine");
   if (!line) return;
-  line.textContent = (pinyinEnabled && answer && answer.pinyin) ? answer.pinyin : "";
-  line.classList.toggle("on", Boolean(pinyinEnabled && answer && answer.pinyin));
+  line.textContent = (pinyinEnabled && answer && answer.questionPinyin) ? answer.questionPinyin : "";
+  line.classList.toggle("on", Boolean(pinyinEnabled && answer && answer.questionPinyin));
 }
 
 function updatePinyinToggle(){
@@ -140,6 +173,15 @@ setTimeout(() => {
         b.innerHTML = '<span class="n">' + (i + 1) + '</span><span>' + escapeHtml(choice) + '</span>';
         b.onclick = () => choose(b, choice);
         box.appendChild(b);
+      });
+
+      // Even equal-character choices may wrap differently on narrow screens.
+      // Match all four buttons to the tallest rendered choice.
+      requestAnimationFrame(() => {
+        const buttons = Array.from(box.querySelectorAll("button"));
+        buttons.forEach(button => { button.style.minHeight = "0"; });
+        const tallest = Math.max(...buttons.map(button => button.offsetHeight));
+        buttons.forEach(button => { button.style.minHeight = tallest + "px"; });
       });
     };
   }
