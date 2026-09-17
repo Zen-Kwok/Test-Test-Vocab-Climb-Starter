@@ -191,8 +191,7 @@ setTimeout(() => {
 
   const sprite = document.getElementById("climber");
   if (sprite){
-    sprite.style.backgroundImage = 'url("schoolgirl-climber.svg")';
     sprite.setAttribute("role", "img");
-    sprite.setAttribute("aria-label", "女生攀登角色");
+    sprite.setAttribute("aria-label", "荷叶跳跃角色");
   }
 }, 0);

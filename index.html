@@ -81,8 +81,8 @@ body{
 
 .climber{
   position:absolute; bottom:0;
-  width:78px; height:78px; margin-left:-39px;
-  background-image:url("climber.png");
+  width:82px; height:130px; margin-left:-41px;
+  background-image:url("girl-jump-sprite.png");
   background-size:600% 100%;      /* 6 格并排 · a 6-frame strip */
   background-position-x:0%;
   image-rendering:auto;
@@ -187,6 +187,28 @@ body{
 }
 .screen .fine{ font-size:.78rem; opacity:.6; letter-spacing:.04em; }
 
+.character-prompt{ font-weight:700; color:var(--cream); }
+.character-options{ display:flex; gap:12px; width:min(100%,340px); }
+.character-choice{
+  flex:1; display:flex; flex-direction:column; align-items:center; gap:7px;
+  padding:10px 8px 11px !important; border-radius:15px !important;
+  color:var(--cream) !important; background:rgba(25,49,45,.88) !important;
+  border:2px solid rgba(246,239,226,.22) !important;
+  font-size:.95rem !important; letter-spacing:.02em !important;
+}
+.character-choice.selected{
+  border-color:#9ee7a4 !important; box-shadow:0 0 0 3px rgba(105,190,111,.22);
+  background:rgba(28,85,55,.94) !important;
+}
+.character-preview{
+  width:74px; height:108px; background-size:600% 100%;
+  background-position:0 0; background-repeat:no-repeat;
+  filter:drop-shadow(0 4px 4px rgba(0,0,0,.32));
+}
+.character-preview.boy{ background-image:url("boy-jump-sprite.png"); }
+.character-preview.girl{ background-image:url("girl-jump-sprite.png"); }
+#startBtn:disabled{ opacity:.45; cursor:not-allowed; }
+
 /* 出错画面的字要左对齐才读得清楚 · errors read better left-aligned */
 #errScreen{ background:#2a1512; }
 #errScreen .box{
@@ -258,7 +280,18 @@ body{
   <div class="screen on" id="startScreen">
     <h1>荷叶快跳</h1>
     <p id="startInfo"></p>
-    <button id="startBtn">开始跳跃</button>
+    <p class="character-prompt">请选择角色</p>
+    <div class="character-options">
+      <button class="character-choice" id="boyChoice" type="button">
+        <span class="character-preview boy" aria-hidden="true"></span>
+        <span>我是男生！</span>
+      </button>
+      <button class="character-choice" id="girlChoice" type="button">
+        <span class="character-preview girl" aria-hidden="true"></span>
+        <span>我是女生！</span>
+      </button>
+    </div>
+    <button id="startBtn" disabled>开始跳跃</button>
     <p class="fine">答对跳向下一片荷叶 · 答错扣三秒</p>
   </div>
 
@@ -333,6 +366,19 @@ let altitude = 0, score = 0, deadline = 0;
 let running = false, locked = false;
 let tickId = null, animId = null;
 let answer = null, recent = [];
+let selectedCharacter = null;
+
+function chooseCharacter(type){
+  selectedCharacter = type;
+  const isBoy = type === 'boy';
+  climber.style.backgroundImage = 'url("' + (isBoy ? 'boy-jump-sprite.png' : 'girl-jump-sprite.png') + '")';
+  $('boyChoice').classList.toggle('selected', isBoy);
+  $('girlChoice').classList.toggle('selected', !isBoy);
+  $('boyChoice').setAttribute('aria-pressed', isBoy ? 'true' : 'false');
+  $('girlChoice').setAttribute('aria-pressed', isBoy ? 'false' : 'true');
+  $('startBtn').disabled = false;
+  setFrame(0);
+}
 
 /* --- 检查老师填的词语表 · check the teacher's word list ---- */
 function findProblem(){
@@ -497,13 +543,14 @@ function ascend(){
   climber.classList.add('hop');
 
   clearInterval(animId);
-  let frame = 3, steps = 0;
-  setFrame(frame);
+  const jumpFrames = [1, 2, 3, 3, 4, 0];
+  let frameIndex = 0;
+  setFrame(jumpFrames[frameIndex]);
   animId = setInterval(() => {
-    frame = (frame === 3) ? 4 : 3;
-    setFrame(frame);
-    if (++steps >= 4){ clearInterval(animId); setFrame(0); }
-  }, CLIMB_MS / 4);
+    frameIndex++;
+    setFrame(jumpFrames[Math.min(frameIndex, jumpFrames.length - 1)]);
+    if (frameIndex >= jumpFrames.length - 1) clearInterval(animId);
+  }, CLIMB_MS / (jumpFrames.length - 1));
 
   // 人物落在荷叶上时，荡开两圈水波。
   setTimeout(makeRipple, CLIMB_MS - 40);
@@ -524,6 +571,7 @@ function makeRipple(){
 
 /* --- 一局的开始与结束 · run start & end ------------------- */
 function startRun(){
+  if (!selectedCharacter) return;
   altitude = 0; score = 0; recent = [];
   running = true; locked = false;
   deadline = performance.now() + Number(SECONDS) * 1000;
@@ -574,6 +622,8 @@ try {
       '<b>' + escapeHtml(UNIT_NAME) + '</b><br>' +
       VOCAB.length + ' 个词语 · ' + Number(SECONDS) + ' 秒';
     place();
+    $('boyChoice').onclick = () => chooseCharacter('boy');
+    $('girlChoice').onclick = () => chooseCharacter('girl');
     $('startBtn').onclick = startRun;
     $('againBtn').onclick = startRun;
     setFrame(0);
